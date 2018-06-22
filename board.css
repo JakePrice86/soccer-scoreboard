@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway+Dots');
+
+body {
+    background: #55efc4;
+    overflow: hidden;
+}
+
+.main-screen {
+    height: 100vh;
+    width: 100%;
+}
+
+.nice {
+    position: absolute;
+    top: 30px;
+    left: 0px;
+    z-index: 2;
+}
+
+.sponsor-slot {
+    background: #FFF;
+    width: 160px;
+    height: 100px;
+    position: relative;
+    top: 30px;
+    text-align: center;
+    line-height: 100px;
+    right: -70px;
+    padding-right: 80px;
+    padding-left: 25px;
+    z-index: -1;
+    border-radius: 50px;
+}
+
+.scorestack {
+    position: relative;
+    top: 30px;
+    left: -50px;
+    padding-left: 60px;
+    width: 250px !important;
+    line-height: 50px;
+    z-index: -1;
+    background: #FFF;
+}
+
+.scorestack table {
+    width: 100%;
+}
+
+.scorestack td {
+    background: #2d3436;
+    color: #FFF;
+    text-align: center;
+    font-weight: 700;
+}
+
+.timer-slot {
+    background: #FFF;
+    width: 170px;
+    height: 170px;
+    padding: 10px;
+    border-radius: 100px;
+}
+
+#video {
+    object-fit: fill;
+    z-index: -2;
+}

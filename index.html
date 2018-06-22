@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>VAR</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="board.css">
+    
+</head>
+
+<body>
+    
+    <div class="main-screen">
+        <video id="video" width="100%" height="100%" autoplay></video>
+    </div>
+
+    <div class="nice row">
+        <div class="sponsor-slot">
+            <img src='logo.jpg' width="50px" height="50px" />
+        </div>
+        <div class="timer-slot">
+            <input type="text" 
+            value="0" 
+            data-min="0" 
+            data-max="45" 
+            class="timer" 
+            data-angleArc="270" 
+            data-fgColor='#2d3436'>
+        </div>
+        <div class="px-0">
+            <div class="scorestack">
+                <table>
+                    <tr>
+                        <th width="80%">Team 1</th>
+                        <td class="team-home">0</td>
+                    </tr>
+                    <tr>
+                        <th width="80%">Team 2</th>
+                        <td class="team-away">0</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <script src='knob.js'></script>
+    
+    <script src='var.js'></script>
+
+</body>
+
+</html>
