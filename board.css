@@ -17,6 +17,16 @@ body {
     z-index: 2;
 }
 
+.replay {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    z-index: 2;
+    color: #e84118;
+    text-transform: uppercase;
+    animation: blinker 1s linear infinite;
+}
+
 .sponsor-slot {
     background: #FFF;
     width: 160px;
@@ -62,7 +72,17 @@ body {
     border-radius: 100px;
 }
 
-#video {
+#video, #recording {
     object-fit: fill;
     z-index: -2;
+}
+
+.blink_me {
+  
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }

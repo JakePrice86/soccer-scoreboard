@@ -7,18 +7,20 @@ window.VAR = {
         homeLess: "y",
         awayLess: "q",
         refresh: "r",
-        cameraToggle: 'c',
-        startTimer: 's'
+        startTimer: 's',
+        replay: 'p'
     },
     knob: {},
     timeout: {},
     time: 0,
     home: 0,
     away: 0,
+    buffer: 10000,
+    replay: false,
 
     init: function ()
     {
-        // this.camera()
+        this.newCamera()
         this.initKnob()
         $('body').keydown(key => this.buttonPress(key))
     },
@@ -35,9 +37,95 @@ window.VAR = {
         }
     },
 
-    recordFrame: function ()
+    newCamera: function ()
     {
 
+        if (this.replay) { return true }
+        let video = document.getElementById('video');
+        let recording = document.getElementById("recording");
+
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true
+        }).then(stream => {
+            video.srcObject = stream;
+            // downloadButton.href = stream;
+            video.captureStream = video.captureStream || video.mozCaptureStream;
+            return new Promise(resolve => video.onplaying = resolve);
+        }).then(() => this.startRecording(
+            video.captureStream(), this.buffer)
+        )
+        .then(recordedChunks => {
+
+            //-- Once we have recorded, lets restart
+            let recordedBlob = new Blob(recordedChunks, { type: "video/webm" });
+            recording.src = URL.createObjectURL(recordedBlob);
+            this.newCamera()
+        })
+        .catch(e => {
+            console.log(e)
+        });
+    },
+
+    startRecording: function (stream, lengthInMS)
+    {
+        let recorder = new MediaRecorder(stream);
+        let data = [];
+
+        recorder.ondataavailable = event => data.push(event.data);
+        recorder.start();
+        console.log(recorder.state + " for " + (lengthInMS / 1000) + " seconds...");
+
+        let stopped = new Promise((resolve, reject) => {
+            recorder.onstop = resolve;
+            recorder.onerror = event => reject(event.name);
+        });
+
+        let recorded = this.wait(lengthInMS).then(
+            () => recorder.state == "recording" && recorder.stop()
+        );
+
+        return Promise.all([
+            stopped,
+            recorded
+        ])
+        .then(() => data);
+
+    },
+
+    showReplay: function ()
+    { 
+
+        this.replay = true
+        let video = document.getElementById('video');
+        video.style.display = "none"
+
+        $('.replay').show()
+
+        let recording = document.getElementById("recording");
+        recording.style.display = "block"
+        recording.play()
+        
+    },
+
+    stopReplay: function ()
+    {
+        this.replay = false
+        let video = document.getElementById('video');
+        video.style.display = "block"
+
+        $('.replay').hide()
+
+        let recording = document.getElementById("recording");
+        recording.style.display = "none"
+        recording.stop
+
+        this.newCamera()
+    },
+
+    wait: function(delayInMS) 
+    {
+        return new Promise(resolve => setTimeout(resolve, delayInMS));
     },
 
     buttonPress: function (key)
@@ -63,12 +151,15 @@ window.VAR = {
             case this.keys.refresh:
                 window.location.reload()
             break
-            case this.keys.cameraToggle:
-                this.camera()
-                window.location.reload()
-            break;
             case this.keys.startTimer:
                 this.startTimer()
+            break
+            case this.keys.replay:
+                if (this.replay) {
+                    this.stopReplay()
+                } else {
+                    this.showReplay()
+                }
             break
         }
             
